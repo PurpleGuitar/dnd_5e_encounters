@@ -64,8 +64,35 @@ function createIntegerDropDown($name, $minValue, $maxValue, $selectedValue) {
     </table>
     <input type="submit"></input>
 </form>
-    
 
+<?php
+/* Don't print report if user didn't click submit yet */
+if (!isset($_GET['quantity']) || empty($_GET['quantity'])) {
+    echo "</body>";
+    echo "</html>";
+    return;
+}
+?>
+    
+<h1>Encounter Report</h2>
+
+<h2>Party Size</h2>
+
+<p>Your party consists of:</p>
+<ul>
+<?php
+for ($i = 0; $i < count($quantity); $i++) {
+    if ($quantity[$i] > 0) {
+        echo "<li>";
+        echo $quantity[$i];
+        echo " level ";
+        echo $level[$i];
+        echo " character(s)";
+        echo "</li>";
+    }
+}
+?>
+</ul>
 
 </body>
 </html>
