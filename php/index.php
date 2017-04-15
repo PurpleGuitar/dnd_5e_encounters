@@ -107,6 +107,7 @@ if (($handle = fopen("data/xp_thresholds.csv", "r")) !== FALSE) {
 
 <table>
     <tr>
+        <th></th>
         <th>Quantity</th>
         <th>Level</th>
         <th>Easy</th>
@@ -115,10 +116,13 @@ if (($handle = fopen("data/xp_thresholds.csv", "r")) !== FALSE) {
         <th>Deadly</th>
     </tr>
 <?php
+$quantity_total = 0;
 $xp_budget_total = array();
 for ($i = 0; $i < count($quantity); $i++) {
     if ($quantity[$i] > 0) {
+        $quantity_total += $quantity[$i];
         echo "<tr>";
+        echo "<td></td>";
         echo "<td>";
         echo $quantity[$i];
         echo "</td>";
@@ -149,7 +153,8 @@ for ($i = 0; $i < count($quantity); $i++) {
     }
 }
 echo "<tr>";
-echo "<td>TOTAL</td>";
+echo "<td>TOTAL:</td>";
+echo "<td>". $quantity_total . "</td>";
 echo "<td></td>";
 echo "<td>" . $xp_budget_total["Easy"] . "</td>";
 echo "<td>" . $xp_budget_total["Medium"] . "</td>";
