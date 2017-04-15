@@ -73,30 +73,7 @@ if (!isset($_GET['quantity']) || empty($_GET['quantity'])) {
 }
 ?>
 
-<h1>Encounter Reports</h2>
-
-<h2>Party Size</h2>
-
-<p>Your party consists of:</p>
-<ul>
-<?php
-for ($i = 0; $i < count($quantity); $i++) {
-    if ($quantity[$i] > 0) {
-        echo "<li>";
-        echo $quantity[$i];
-        echo " level ";
-        echo $level[$i];
-        echo " character";
-        if ($quantity[$i] > 1) {
-            echo "s";
-        }
-        echo "</li>";
-    }
-}
-?>
-</ul>
-
-<h2>XP Budget</h2>
+<h1>XP Budget</h1>
 
 <?php
 $xp_thresholds = array();
@@ -127,6 +104,59 @@ if (($handle = fopen("data/xp_thresholds.csv", "r")) !== FALSE) {
     fclose($handle);
 }
 ?>
+
+<table>
+    <tr>
+        <th>Quantity</th>
+        <th>Level</th>
+        <th>Easy</th>
+        <th>Medium</th>
+        <th>Hard</th>
+        <th>Deadly</th>
+    </tr>
+<?php
+$xp_budget_total = array();
+for ($i = 0; $i < count($quantity); $i++) {
+    if ($quantity[$i] > 0) {
+        echo "<tr>";
+        echo "<td>";
+        echo $quantity[$i];
+        echo "</td>";
+        echo "<td>";
+        echo $level[$i];
+        echo "</td>";
+        echo "<td>";
+        $xp_budget = $xp_thresholds[$level[$i]]["Easy"] * $quantity[$i];
+        echo $xp_budget;
+        $xp_budget_total["Easy"] += $xp_budget;
+        echo "</td>";
+        echo "<td>";
+        $xp_budget = $xp_thresholds[$level[$i]]["Medium"] * $quantity[$i];
+        echo $xp_budget;
+        $xp_budget_total["Medium"] += $xp_budget;
+        echo "</td>";
+        echo "<td>";
+        $xp_budget = $xp_thresholds[$level[$i]]["Hard"] * $quantity[$i];
+        echo $xp_budget;
+        $xp_budget_total["Hard"] += $xp_budget;
+        echo "</td>";
+        echo "<td>";
+        $xp_budget = $xp_thresholds[$level[$i]]["Deadly"] * $quantity[$i];
+        echo $xp_budget;
+        $xp_budget_total["Deadly"] += $xp_budget;
+        echo "</td>";
+        echo "</tr>";
+    }
+}
+echo "<tr>";
+echo "<td>TOTAL</td>";
+echo "<td></td>";
+echo "<td>" . $xp_budget_total["Easy"] . "</td>";
+echo "<td>" . $xp_budget_total["Medium"] . "</td>";
+echo "<td>" . $xp_budget_total["Hard"] . "</td>";
+echo "<td>" . $xp_budget_total["Deadly"] . "</td>";
+?>
+</table>
 
 </body>
 </html>
