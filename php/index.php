@@ -38,7 +38,6 @@ function createIntegerDropDown($name, $minValue, $maxValue, $selectedValue) {
 
 ?>
 
-
 <h1>Your Party</h1>
 
 <p>Please choose how many characters are in your party, and what level they are:</p>
@@ -87,7 +86,10 @@ for ($i = 0; $i < count($quantity); $i++) {
         echo $quantity[$i];
         echo " level ";
         echo $level[$i];
-        echo " character(s)";
+        echo " character";
+        if ($quantity[$i] > 1) {
+            echo "s";
+        }
         echo "</li>";
     }
 }
