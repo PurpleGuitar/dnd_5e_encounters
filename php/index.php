@@ -72,7 +72,7 @@ if (!isset($_GET['quantity']) || empty($_GET['quantity'])) {
     return;
 }
 ?>
-    
+
 <h1>Encounter Report</h2>
 
 <h2>Party Size</h2>
