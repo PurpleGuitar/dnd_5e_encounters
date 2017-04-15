@@ -7,17 +7,18 @@
 <?php
 
 /* Grab quantity if specified */
-$quantity = 1;
+$quantity = array(4,0,0,0,0);
 if (isset($_GET['quantity']) && !empty($_GET['quantity'])) {
     $quantity = $_GET['quantity'];
 }
 
 /* Grab level if specified */
-$level = 1;
+$level = array(1,2,3,4,5);
 if (isset($_GET['level']) && !empty($_GET['level'])) {
     $level = $_GET['level'];
 }
 
+/* Function to create an integer-based drop-down field. */
 function createIntegerDropDown($name, $minValue, $maxValue, $selectedValue) {
     echo "<select";
     echo " name='$name'";
@@ -48,31 +49,23 @@ function createIntegerDropDown($name, $minValue, $maxValue, $selectedValue) {
             <th>Quantity</th>
             <th>Level</th>
         </tr>
-        <tr>
-            <td> <?php createIntegerDropDown("quantity",1,10,$quantity); ?> </td>
-            <td> <?php createIntegerDropDown("level",1,20,$quantity); ?> </td>
-        </tr>
+        <?php
+        for ($i = 0; $i < 5; $i++) {
+            echo "\n<tr>";
+            echo "\n<td>";
+            createIntegerDropDown("quantity[]",0,10,$quantity[$i]);
+            echo "</td>";
+            echo "\n<td>";
+            createIntegerDropDown("level[]",1,20,$level[$i]);
+            echo "</td>";
+            echo "</tr>";
+        }
+        ?>
     </table>
     <input type="submit"></input>
 </form>
     
-<?php
 
-/* If quantity isn't specified, don't load the rest of the page. */
-if (!isset($_GET['quantity']) || empty($_GET['quantity'])) {
-    return;
-}
-
-/* If level isn't specified, don't load the rest of the page. */
-if (!isset($_GET['level']) || empty($_GET['level'])) {
-    return;
-}
-
-?>
-
-<p>OK, you have 
-    <?php echo $_GET['quantity'] ?> 
-    level <?php echo $_GET['level']?> 
-    character(s) in your party.</p>
 
 </body>
+</html>
