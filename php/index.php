@@ -6,6 +6,8 @@
 
 <?php
 
+require("utils.php");
+
 /* Grab quantity if specified */
 $quantity = array(4,0,0,0,0);
 if (isset($_GET['quantity']) && !empty($_GET['quantity'])) {
@@ -16,24 +18,6 @@ if (isset($_GET['quantity']) && !empty($_GET['quantity'])) {
 $level = array(1,2,3,4,5);
 if (isset($_GET['level']) && !empty($_GET['level'])) {
     $level = $_GET['level'];
-}
-
-/* Function to create an integer-based drop-down field. */
-function createIntegerDropDown($name, $minValue, $maxValue, $selectedValue) {
-    echo "<select";
-    echo " name='$name'";
-    echo ">";
-    for ($value = $minValue; $value <= $maxValue; $value++) {
-        echo "<option";
-        echo " value='$value'";
-        if ($value == $selectedValue) {
-            echo " selected='selected'";
-        }
-        echo ">";
-        echo $value;
-        echo "</option>";
-    }
-    echo "</select>";
 }
 
 ?>
