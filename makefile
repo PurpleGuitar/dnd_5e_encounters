@@ -1,4 +1,7 @@
-all: php/index.php
-	rm -rf deploy/*
-	cp php/*.php deploy
-	cp -r data deploy
+build: php/index.php
+	rm -rf bin/*
+	cp php/*.php bin
+	cp -r data bin
+
+run: build
+	xdg-open http://localhost &
