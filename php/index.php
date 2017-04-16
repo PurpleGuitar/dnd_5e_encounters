@@ -58,6 +58,8 @@ if (!isset($_GET['quantity']) || empty($_GET['quantity'])) {
 ?>
 
 <?php include("xp_budget.php"); ?>
+<?php include("encounter_multipliers.php"); ?>
+<?php include("cr_to_xp.php"); ?>
 
 
 </body>

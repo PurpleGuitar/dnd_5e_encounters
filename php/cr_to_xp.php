@@ -1,8 +1,8 @@
 <?php
 
-function getXpThresholds() {
+function getCRToXP() {
     $table = array();
-    if (($handle = fopen("data/xp_thresholds.csv", "r")) !== FALSE) {
+    if (($handle = fopen("data/cr_to_xp.csv", "r")) !== FALSE) {
         $row = 0;
         $col_names_to_numbers = array();
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
@@ -18,12 +18,7 @@ function getXpThresholds() {
             } 
             // Handle data row
             for ($col = 0; $col < $num_cols; $col++) {
-                $table_row = array();
-                $table_row["Easy"] = $data[$col_names_to_numbers["Easy"]];
-                $table_row["Medium"] = $data[$col_names_to_numbers["Medium"]];
-                $table_row["Hard"] = $data[$col_names_to_numbers["Hard"]];
-                $table_row["Deadly"] = $data[$col_names_to_numbers["Deadly"]];
-                $table[$data[$col_names_to_numbers["Level"]]] = $table_row;
+                $table[$data[$col_names_to_numbers["CR"]]] = $data[$col_names_to_numbers["XP"]];
             }
         }
         fclose($handle);
@@ -32,6 +27,6 @@ function getXpThresholds() {
 }
 
 // Global variable
-$XP_THRESHOLDS = getXpThresholds(); 
+$CR_TO_XP = getCRToXP();
 
 ?>
