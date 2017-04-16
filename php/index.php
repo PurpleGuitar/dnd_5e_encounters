@@ -6,7 +6,7 @@
 
 <?php
 
-require("utils.php");
+require_once("utils.php");
 
 /* process quantity parameters */
 $quantity = array(4,0,0,0,0);

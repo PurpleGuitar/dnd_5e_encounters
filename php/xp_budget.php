@@ -1,5 +1,5 @@
 <?php 
-require("xp_thresholds.php");
+require_once("xp_thresholds.php");
 ?>
 
 <h1>XP Budget</h1>
