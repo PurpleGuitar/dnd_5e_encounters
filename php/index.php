@@ -9,7 +9,7 @@
 require_once("utils.php");
 
 /* process quantity parameters */
-$quantity = array(4,0,0,0,0);
+$quantity = array(1,0,0,0,0);
 if (isset($_GET['quantity']) && !empty($_GET['quantity'])) {
     $quantity = $_GET['quantity'];
 }
