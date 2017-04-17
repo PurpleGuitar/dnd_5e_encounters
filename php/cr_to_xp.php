@@ -18,11 +18,9 @@ if (($handle = fopen("data/cr_to_xp.csv", "r")) !== FALSE) {
             continue;
         } 
         // Handle data row
-        for ($col = 0; $col < $num_cols; $col++) {
-            $cr = $data[$col_names_to_numbers["CR"]];
-            $CR_TO_XP[$cr] = $data[$col_names_to_numbers["XP"]];
-            array_push($CR_KEYS, $cr);
-        }
+        $cr = $data[$col_names_to_numbers["CR"]];
+        $CR_TO_XP[$cr] = $data[$col_names_to_numbers["XP"]];
+        array_push($CR_KEYS, $cr);
     }
     fclose($handle);
 }

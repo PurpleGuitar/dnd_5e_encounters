@@ -8,7 +8,7 @@ require_once("cr_to_xp.php");
 
 <?php
 
-$max_quantity = 20;
+$max_quantity = 7;
 $encounter_list = array();
 
 // Search combinations
@@ -37,11 +37,12 @@ while ($still_searching) {
         }
     }
 
+
     // Create encounter
     $encounter = array();
     $encounter["Encounter"] = "";
     $encounter["Reward XP"] = 0;
-    for ($i = 0; $i < count($creatures); $i++) {
+    for ($i = count($creatures) - 1; $i >= 0; $i--) {
         $quantity = $creatures[$i];
         if ($quantity > 0) {
             $cr_name = $CR_KEYS[$i];
@@ -56,7 +57,7 @@ while ($still_searching) {
     array_push($encounter_list, $encounter);
 
     // Emergency brake
-    if ($iterations >= 5) {
+    if ($iterations >= 20) {
         $still_searching = false;
     }
 }
