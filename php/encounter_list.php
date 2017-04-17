@@ -8,7 +8,7 @@ require_once("cr_to_xp.php");
 
 <?php
 
-$max_quantity = 7;
+$max_quantity = 10;
 $encounter_list = array();
 
 // Search combinations
@@ -40,13 +40,20 @@ while ($still_searching) {
 
     // Create encounter
     $encounter = array();
+
+    // Description
     $encounter["Encounter"] = "";
     $encounter["Reward XP"] = 0;
+    $encounter_quantity = 0;
     for ($i = count($creatures) - 1; $i >= 0; $i--) {
         $quantity = $creatures[$i];
+        $encounter_quantity += $quantity;
         if ($quantity > 0) {
+
             $cr_name = $CR_KEYS[$i];
             $xp_value = $CR_TO_XP[$cr_name];
+
+            // Encounter description
             if (strlen($encounter["Encounter"]) > 0) {
                 $encounter["Encounter"] .= "; ";
             }
@@ -54,10 +61,36 @@ while ($still_searching) {
             $encounter["Reward XP"] += $xp_value * $quantity;
         }
     }
+
+    // Party size adjustment
+    $party_size_adjustment = 0;
+    if ($QUANTITY_TOTAL < 3) {
+        $party_size_adjustment += 1;
+    } elseif ($QUANTITY_TOTAL >= 6) {
+        $party_size_adjustment -= 1;
+    }
+
+    // Encounter size multiplier
+    $encounter_size_multiplier = lookupEncounterMultiplier($encounter_quantity + $party_size_adjustment);
+    $encounter["Difficulty Multiplier"] = "x" . $encounter_size_multiplier;
+    if ($party_size_adjustment != 0) {
+        $encounter["Difficulty Multiplier"] .= " (";
+        if ($party_size_adjustment > 0) {
+            $encounter["Difficulty Multiplier"] .= "+";
+        }
+        $encounter["Difficulty Multiplier"] .= $party_size_adjustment . " for party size)";
+    }
+
+    // Difficulty XP
+    $encounter["Difficulty XP"] .= $encounter["Reward XP"] * $encounter_size_multiplier;
+
+
+
+    // Done
     array_push($encounter_list, $encounter);
 
     // Emergency brake
-    if ($iterations >= 20) {
+    if ($iterations >= 100) {
         $still_searching = false;
     }
 }
@@ -69,8 +102,7 @@ while ($still_searching) {
         <th>Difficulty</th>
         <th>Encounter</th>
         <th>Reward XP</th>
-        <th>Party Size Multiplier</th>
-        <th>Encounter Size Multiplier</th>
+        <th>Difficulty Multiplier</th>
         <th>Difficulty XP</th>
     </tr>
 <?php
@@ -79,9 +111,8 @@ foreach ($encounter_list as $encounter) {
     echo "<td></td>";
     echo "<td>".$encounter["Encounter"]."</td>";
     echo "<td>".$encounter["Reward XP"]."</td>";
-    echo "<td></td>";
-    echo "<td></td>";
-    echo "<td></td>";
+    echo "<td>".$encounter["Difficulty Multiplier"]."</td>";
+    echo "<td>".$encounter["Difficulty XP"]."</td>";
     echo "</tr>";
 }
 ?>

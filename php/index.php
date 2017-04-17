@@ -45,7 +45,7 @@ if (isset($_GET['level']) && !empty($_GET['level'])) {
         }
         ?>
     </table>
-    <input type="submit"></input>
+    <input type="submit" value="Calculate!"></input>
 </form>
 
 <?php
