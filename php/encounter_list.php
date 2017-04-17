@@ -8,10 +8,17 @@ require_once("cr_to_xp.php");
 
 <?php
 
-$max_quantity = 10;
-$encounter_list = array();
+// Qualitative difficulty
+$bp_min_easy = $XP_BUDGET_TOTAL["Easy"];
+$bp_min_medium = ($XP_BUDGET_TOTAL["Easy"] + $XP_BUDGET_TOTAL["Medium"]) / 2;
+$bp_min_hard = ($XP_BUDGET_TOTAL["Medium"] + $XP_BUDGET_TOTAL["Hard"]) / 2;
+$bp_min_deadly = ($XP_BUDGET_TOTAL["Hard"] + $XP_BUDGET_TOTAL["Deadly"]) / 2;
+
+// Max quantity per group (should be settable?)
+$max_quantity = 5;
 
 // Search combinations
+$encounter_list = array();
 $creatures = array();
 $iterations = 0;
 $still_searching = true;
@@ -19,7 +26,7 @@ while ($still_searching) {
 
     // Emergency brake
     $iterations++;
-    if ($iterations >= 100) {
+    if ($iterations >= 100000) {
         $still_searching = false;
     }
 
@@ -84,7 +91,23 @@ while ($still_searching) {
     }
 
     // Difficulty XP
-    $encounter["Difficulty XP"] = $encounter["Reward XP"] * $encounter_size_multiplier;
+    $encounter["Difficulty XP"] = ceil($encounter["Reward XP"] * $encounter_size_multiplier);
+
+    // Qualitative difficulty
+    if ($encounter["Difficulty XP"] < $bp_min_easy) {
+        $encounter["Difficulty"] = "Too Easy";
+    } elseif ($encounter["Difficulty XP"] < $bp_min_medium) {
+        $encounter["Difficulty"] = "Easy";
+    } elseif ($encounter["Difficulty XP"] < $bp_min_hard) {
+        $encounter["Difficulty"] = "Medium";
+    } elseif ($encounter["Difficulty XP"] < $bp_min_deadly) {
+        $encounter["Difficulty"] = "Hard";
+    } elseif ($encounter["Difficulty XP"] <= $XP_BUDGET_TOTAL["Deadly"]) {
+        $encounter["Difficulty"] = "Deadly";
+    } else {
+        $encounter["Difficulty"] = "Too Deadly";
+    }
+
 
     // Filter out inappropriate encounters
     if ($dont_filter_difficulty == false) {
@@ -120,7 +143,7 @@ usort($encounter_list, function($a, $b) {
 <?php
 foreach ($encounter_list as $encounter) {
     echo "<tr>";
-    echo "<td></td>";
+    echo "<td>".$encounter["Difficulty"]."</td>";
     echo "<td>".$encounter["Encounter"]."</td>";
     echo "<td>".$encounter["Reward XP"]."</td>";
     echo "<td>".$encounter["Difficulty Multiplier"]."</td>";
