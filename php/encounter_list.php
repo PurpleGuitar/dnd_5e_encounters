@@ -101,6 +101,12 @@ while ($still_searching) {
 
 }
 
+// Sort encounter list by difficulty XP
+usort($encounter_list, function($a, $b) {
+    return $a["Difficulty XP"] - $b["Difficulty XP"];
+});
+
+
 ?>
 
 <table>
