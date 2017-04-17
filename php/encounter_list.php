@@ -16,7 +16,12 @@ $creatures = array();
 $iterations = 0;
 $still_searching = true;
 while ($still_searching) {
+
+    // Emergency brake
     $iterations++;
+    if ($iterations >= 100) {
+        $still_searching = false;
+    }
 
     // Increment creature array
     $still_incrementing = true;
@@ -49,15 +54,12 @@ while ($still_searching) {
         $quantity = $creatures[$i];
         $encounter_quantity += $quantity;
         if ($quantity > 0) {
-
             $cr_name = $CR_KEYS[$i];
             $xp_value = $CR_TO_XP[$cr_name];
-
-            // Encounter description
             if (strlen($encounter["Encounter"]) > 0) {
                 $encounter["Encounter"] .= "; ";
             }
-            $encounter["Encounter"] .= $quantity . " " . CR . " " . $cr_name;
+            $encounter["Encounter"] .= $quantity . " CR " . $cr_name;
             $encounter["Reward XP"] += $xp_value * $quantity;
         }
     }
@@ -82,17 +84,21 @@ while ($still_searching) {
     }
 
     // Difficulty XP
-    $encounter["Difficulty XP"] .= $encounter["Reward XP"] * $encounter_size_multiplier;
+    $encounter["Difficulty XP"] = $encounter["Reward XP"] * $encounter_size_multiplier;
 
-
+    // Filter out inappropriate encounters
+    if ($dont_filter_difficulty == false) {
+        if ($encounter["Difficulty XP"] < $XP_BUDGET_TOTAL["Easy"]) {
+            continue;
+        }
+        if ($encounter["Difficulty XP"] > $XP_BUDGET_TOTAL["Deadly"]) {
+            continue;
+        }
+    }
 
     // Done
     array_push($encounter_list, $encounter);
 
-    // Emergency brake
-    if ($iterations >= 100) {
-        $still_searching = false;
-    }
 }
 
 ?>

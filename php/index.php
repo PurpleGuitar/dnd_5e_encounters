@@ -20,6 +20,12 @@ if (isset($_GET['level']) && !empty($_GET['level'])) {
     $level = $_GET['level'];
 }
 
+/* process filter */
+$dont_filter_difficulty = false;
+if (isset($_GET['dont_filter_difficulty']) && !empty($_GET['dont_filter_difficulty'])) {
+    $dont_filter_difficulty = true;
+}
+
 ?>
 
 <h1>Your Party</h1>
@@ -45,6 +51,9 @@ if (isset($_GET['level']) && !empty($_GET['level'])) {
         }
         ?>
     </table>
+    <input type="checkbox" name="dont_filter_difficulty"
+        <?php if ($dont_filter_difficulty) {?>checked="checked"<?php } ?> 
+        >Show encounters that are too easy or too hard</input><br/>
     <input type="submit" value="Calculate!"></input>
 </form>
 
