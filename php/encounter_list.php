@@ -124,10 +124,12 @@ while ($still_searching) {
 
 }
 
-// Sort encounter list by difficulty XP
-usort($encounter_list, function($a, $b) {
+function sort_encounters_by_difficulty_xp($a, $b) {
     return $a["Difficulty XP"] - $b["Difficulty XP"];
-});
+}
+
+// Sort encounter list by difficulty XP
+usort($encounter_list, sort_encounters_by_difficulty_xp);
 
 
 ?>
